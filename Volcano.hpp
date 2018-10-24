@@ -8,6 +8,8 @@
  #include <any>
  #include <string>
  #include <iostream>
+ #include <functional>
+ #include <memory>
  #include "Storage.hpp"
  using namespace std;
 

@@ -1,4 +1,5 @@
 #include<map>
+#include<vector>
 using namespace std;
 
 template <typename Tuple> class BufferManager {

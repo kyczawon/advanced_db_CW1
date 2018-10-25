@@ -1,17 +1,17 @@
 #pragma once
- #include <valarray>
- #include <variant>
- #include <array>
- #include <map>
- #include <vector>
- #include <variant>
- #include <any>
- #include <string>
- #include <iostream>
- #include <functional>
- #include <memory>
- #include "Storage.hpp"
- using namespace std;
+#include <valarray>
+#include <variant>
+#include <array>
+#include <map>
+#include <vector>
+#include <variant>
+#include <any>
+#include <string>
+#include <iostream>
+#include <functional>
+#include <memory>
+#include "Storage.hpp"
+using namespace std;
 
 struct SupportedDatatype : public variant<long, double, string> { // <- supported datatypes
 	// All of this stuff is convenience functions
@@ -58,7 +58,13 @@ struct SupportedDatatype : public variant<long, double, string> { // <- supporte
 	}
 	bool operator>(SupportedDatatype const& t) const { return !(*this == t || *this < t); }
 
-	template <typename T> explicit operator T() { return get_if<T>(this) ? *get_if<T>(this) : T{}; }
+	template <typename T> explicit operator T() const {
+		if(!get_if<T>(this))
+			throw logic_error(string("attribute does not hold a value of the requested type: ") +
+												typeid(T).name());
+		return *get_if<T>(this);
+	}
+
 	friend ostream& operator<<(ostream& stream, SupportedDatatype const& v) {
 		if(get_if<long>(&v))
 			stream << *get_if<long>(&v);
@@ -117,7 +123,7 @@ struct Tuple : valarray<SupportedDatatype> {
 	}
 
 	friend ostream& operator<<(ostream& stream, Tuple const& t) {
-		for (auto it = begin(t); it != prev(end(t)); ++it) 
+		for(auto it = begin(t); it != prev(end(t)); ++it)
 			cout << *it << ", ";
 		return stream << *prev(end(t));
 	}
@@ -231,7 +237,7 @@ struct Cross : Operator {
 		for(auto rightTuple = rightChild->next(); rightTuple; //
 				rightTuple = rightChild->next())
 			bufferedRightTuples.push_back(rightTuple);
-	 currentBufferedRightOffset = bufferedRightTuples.size();
+		currentBufferedRightOffset = bufferedRightTuples.size();
 	};
 	Tuple next();
 	void close() {
@@ -329,39 +335,39 @@ struct BufferedScan : Operator {
 
 struct BufferedGroupBy : BufferedScan {
 
-		 unique_ptr<Operator> child;
-		 // array<Tuple, 1024> hashTable; // 1024 is magically known
-		 Projection getGroupKeys;
-		 valarray<AggregationFunction> aggregateFunctions;
-		 size_t const hashTableSize = 1024;
-		 // VolcanoBufferManager& bufferManager;
+	unique_ptr<Operator> child;
+	// array<Tuple, 1024> hashTable; // 1024 is magically known
+	Projection getGroupKeys;
+	valarray<AggregationFunction> aggregateFunctions;
+	size_t const hashTableSize = 1024;
+	// VolcanoBufferManager& bufferManager;
 
-		 static size_t nextGroupOperatorID;
-		 size_t groupOperatorID;
+	static size_t nextGroupOperatorID;
+	size_t groupOperatorID;
 
-		 BufferedGroupBy(unique_ptr<Operator> child, Projection getGroupKeys,
-										 valarray<AggregationFunction> aggregateFunctions,
-										 VolcanoBufferManager& bufferManager)
-				 : child(move(child)), aggregateFunctions(aggregateFunctions), getGroupKeys(getGroupKeys),
-					 groupOperatorID(nextGroupOperatorID),
-					 BufferedScan("groupBuffer" + to_string(nextGroupOperatorID), bufferManager) {
-			 nextGroupOperatorID++;
-		 }
-		 Tuple& getHashTableEntry(size_t id, Tuple const& groupKeys);
-size_t hashTableEntrySize(Tuple const& groupKeys) const ;
+	BufferedGroupBy(unique_ptr<Operator> child, Projection getGroupKeys,
+									valarray<AggregationFunction> aggregateFunctions,
+									VolcanoBufferManager& bufferManager)
+			: child(move(child)), aggregateFunctions(aggregateFunctions), getGroupKeys(getGroupKeys),
+				groupOperatorID(nextGroupOperatorID),
+				BufferedScan("groupBuffer" + to_string(nextGroupOperatorID), bufferManager) {
+		nextGroupOperatorID++;
+	}
+	Tuple& getHashTableEntry(size_t id, Tuple const& groupKeys);
+	size_t hashTableEntrySize(Tuple const& groupKeys) const;
 
-		 void open();
+	void open();
 
-		 int outputCursor = 0;
-		 Tuple next() {
-			 for(auto nextEntry = BufferedScan::next(); nextEntry; nextEntry = BufferedScan::next())
-				 if(long(nextEntry[0]) > 0)
-					 return nextEntry[slice(1, nextEntry.size() - 1, 1)];
-			 return {};
-		 };
-		 void close() {
-			 bufferManager.deleteRelation("groupBuffer" + to_string(nextGroupOperatorID));
+	int outputCursor = 0;
+	Tuple next() {
+		for(auto nextEntry = BufferedScan::next(); nextEntry; nextEntry = BufferedScan::next())
+			if(long(nextEntry[0]) > 0)
+				return nextEntry[slice(1, nextEntry.size() - 1, 1)];
+		return {};
+	};
+	void close() {
+		bufferManager.deleteRelation("groupBuffer" + to_string(nextGroupOperatorID));
 
-			 child->close();
-		 }
-	 };
+		child->close();
+	}
+};

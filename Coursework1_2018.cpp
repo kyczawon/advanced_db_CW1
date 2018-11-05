@@ -24,10 +24,12 @@ bool compareResults(unique_ptr<Operator> plan, unique_ptr<Operator> reference, s
 	reference->open();
 	for(auto t = reference->next(); t; t = reference->next())
 		referenceResult.insert(t);
+	reference->close();
 
 	plan->open();
 	for(auto t = plan->next(); t; t = plan->next())
 		achievedResult.insert(t);
+	plan->close();
 
 	set_symmetric_difference(referenceResult.begin(), referenceResult.end(), achievedResult.begin(),
 													 achievedResult.end(), inserter(delta, end(delta)));
@@ -131,6 +133,8 @@ void equalityQuery(size_t scale = 1000, bool needsSorting = false, bool checkCor
 		case1->open();
 		for(auto t = case1->next(); t; t = case1->next()) {
 		}
+		case1->close();
+
 	}
 
 	auto between = chrono::high_resolution_clock::now();
@@ -139,6 +143,7 @@ void equalityQuery(size_t scale = 1000, bool needsSorting = false, bool checkCor
 		case2->open();
 		for(auto t = case2->next(); t; t = case2->next()) {
 		}
+		case2->close();
 	}
 	auto case2Finish = chrono::high_resolution_clock::now();
 	if(checkCorrectness) {

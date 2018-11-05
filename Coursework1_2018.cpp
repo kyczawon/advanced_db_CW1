@@ -127,9 +127,19 @@ void equalityQuery(size_t scale = 1000, bool needsSorting = false, bool checkCor
 	auto case1Start = chrono::high_resolution_clock::now();
 
 	auto case1 = queries::equalityJoin<T>(customer, orders);
+	if(!checkCorrectness) {
+		case1->open();
+		for(auto t = case1->next(); t; t = case1->next()) {
+		}
+	}
 
 	auto between = chrono::high_resolution_clock::now();
 	auto case2 = queries::equalityJoin<T>(orders, customer);
+	if(!checkCorrectness) {
+		case2->open();
+		for(auto t = case2->next(); t; t = case2->next()) {
+		}
+	}
 	auto case2Finish = chrono::high_resolution_clock::now();
 	if(checkCorrectness) {
 		cout << endl;
@@ -171,11 +181,11 @@ int main() {
 	cout << endl;
 	cout << endl << "performance testing";
 	cout << endl << "===================" << endl;
-	for(size_t i = 10; i < 10000000; i *= 10)
+	for(size_t i = 10; i < 100000; i *= 10)
 		runAtScale::equalityQuery<NestedLoopsJoin>(i, false, false);
-	for(size_t i = 10; i < 10000000; i *= 10)
+	for(size_t i = 10; i < 1000000; i *= 10)
 		runAtScale::equalityQuery<HashJoin>(i, false, false);
-	for(size_t i = 10; i < 10000000; i *= 10)
+	for(size_t i = 10; i < 1000000; i *= 10)
 		runAtScale::equalityQuery<SortMergeJoin>(i, true, false);
 
 	if(enableBonus)

@@ -167,31 +167,31 @@ void equalityQuery(size_t scale = 1000, bool needsSorting = false, bool checkCor
 int main() {
 	bool enableBonus = false;
 
-	cout << endl;
-	cout << endl << "testing correctness";
-	cout << endl << "===================" << endl;
-	run::equalityQuery<NestedLoopsJoin>();
-	run::equalityQuery<HashJoin>();
-	run::equalityQuery<SortMergeJoin>(true);
-	cout << endl;
-	cout << endl << "scaling experiments ";
-	cout << endl << "===================" << endl;
+	// cout << endl;
+	// cout << endl << "testing correctness";
+	// cout << endl << "===================" << endl;
+	// run::equalityQuery<NestedLoopsJoin>();
+	// run::equalityQuery<HashJoin>();
+	// run::equalityQuery<SortMergeJoin>(true);
+	// cout << endl;
+	// cout << endl << "scaling experiments ";
+	// cout << endl << "===================" << endl;
 
 	for(size_t i = 10; i < 1001; i *= 10) {
-		runAtScale::equalityQuery<NestedLoopsJoin>(i);
+		// runAtScale::equalityQuery<NestedLoopsJoin>(i);
 		runAtScale::equalityQuery<HashJoin>(i);
-		runAtScale::equalityQuery<SortMergeJoin>(i, true);
+		// runAtScale::equalityQuery<SortMergeJoin>(i, true);
 	}
 
 	cout << endl;
 	cout << endl << "performance testing";
 	cout << endl << "===================" << endl;
-	for(size_t i = 10; i < 100000; i *= 10)
-		runAtScale::equalityQuery<NestedLoopsJoin>(i, false, false);
+	// for(size_t i = 10; i < 100000; i *= 10)
+	// 	runAtScale::equalityQuery<NestedLoopsJoin>(i, false, false);
 	for(size_t i = 10; i < 1000000; i *= 10)
 		runAtScale::equalityQuery<HashJoin>(i, false, false);
-	for(size_t i = 10; i < 1000000; i *= 10)
-		runAtScale::equalityQuery<SortMergeJoin>(i, true, false);
+	// for(size_t i = 10; i < 1000000; i *= 10)
+	// 	runAtScale::equalityQuery<SortMergeJoin>(i, true, false);
 
 	if(enableBonus)
 		run::inequalityQuery<SortMergeJoin>();

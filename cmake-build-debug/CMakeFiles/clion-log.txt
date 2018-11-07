@@ -1,0 +1,30 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1"
+-- The C compiler identification is unknown
+-- The CXX compiler identification is unknown
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- broken
+CMake Error at /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.12/Modules/CMakeTestCCompiler.cmake:52 (message):
+  The C compiler
+
+    "/usr/bin/cc"
+
+  is not able to compile a simple test program.
+
+  It fails with the following output:
+
+    Change Dir: /Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/cmake-build-debug/CMakeFiles/CMakeTmp
+    
+    Run Build Command:"/usr/bin/make" "cmTC_ea55e/fast"
+    xcrun: error: active developer path ("/Applications/Xcode.app/Contents/Developer") does not exist
+    Use `sudo xcode-select --switch path/to/Xcode.app` to specify the Xcode that you wish to use for command line developer tools, or use `xcode-select --install` to install the standalone command line developer tools.
+    See `man xcode-select` for more details.
+    
+
+  
+
+  CMake will not be able to correctly generate this project.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/cmake-build-debug/CMakeFiles/CMakeError.log".

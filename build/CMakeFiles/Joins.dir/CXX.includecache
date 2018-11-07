@@ -1,0 +1,72 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Coursework1_2018.cpp
+iostream
+-
+Volcano.hpp
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Volcano.hpp
+Joins.hpp
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Joins.hpp
+unordered_set
+-
+set
+-
+algorithm
+-
+cxxabi.h
+-
+random
+-
+iomanip
+-
+chrono
+-
+
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Joins.cpp
+Joins.hpp
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Joins.hpp
+
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Joins.hpp
+Volcano.hpp
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Volcano.hpp
+cmath
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/cmath
+
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Storage.hpp
+map
+-
+vector
+-
+
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Volcano.hpp
+valarray
+-
+variant
+-
+array
+-
+map
+-
+vector
+-
+variant
+-
+any
+-
+string
+-
+iostream
+-
+functional
+-
+memory
+-
+Storage.hpp
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/Storage.hpp
+

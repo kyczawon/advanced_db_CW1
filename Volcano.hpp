@@ -215,7 +215,7 @@ struct Difference : Operator {
 		for(auto nextCandidate = leftChild->next(); nextCandidate; //
 				nextCandidate = leftChild->next())
 			if(find(bufferedRightTuples.begin(), bufferedRightTuples.end(), //
-							nextCandidate) != bufferedRightTuples.end())
+							nextCandidate) == bufferedRightTuples.end())
 				return nextCandidate;
 		return {};
 	};

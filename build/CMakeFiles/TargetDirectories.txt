@@ -1,0 +1,3 @@
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/build/CMakeFiles/rebuild_cache.dir
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/build/CMakeFiles/edit_cache.dir
+/Users/leszek/Desktop/Desktop/Imperial/Advanced Databases/CO572_2018_Coursework1/build/CMakeFiles/Joins.dir

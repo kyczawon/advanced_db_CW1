@@ -3,8 +3,7 @@
 void NestedLoopsJoin::open(){
     left->open();
     right->open();
-    for(Tuple rightTuple = right->next(); rightTuple; //
-        rightTuple = right->next())
+    for(Tuple rightTuple = right->next(); rightTuple; rightTuple = right->next()) //buffer the right side
       bufferedRightTuples.push_back(rightTuple);
 };
 Tuple NestedLoopsJoin::next() {
@@ -14,7 +13,6 @@ Tuple NestedLoopsJoin::next() {
     while(leftInput)
     {
         for (size_t j = 0; j < bufferedRightTuples.size(); j++) {
-
             Tuple rightInput = bufferedRightTuples.at(j);
             if (leftInput[leftAttributeID] == rightInput[rightAttributeID])
             {
@@ -57,11 +55,13 @@ Tuple HashJoin::next() {
     while(leftInput)
     {
         long hashValue = hash(long(leftInput[leftAttributeID]));
-        long distance = 0; //distance is used only for quadratic probing
-        while (hashTable[hashValue].occupied && hashTable[hashValue].data[leftAttributeID] != leftInput[leftAttributeID]) {
+        long distance = 0; //distance is used only for quadratic probing and can be uncommented otherwise
+        while (hashTable[hashValue].occupied && hashTable[hashValue].data[leftAttributeID] != leftInput[leftAttributeID])
+        {
                 hashValue = probe(hashValue, distance);
-            }
-        if (hashTable[hashValue].occupied && hashTable[hashValue].data[leftAttributeID] == leftInput[leftAttributeID]) {
+        }
+        if (hashTable[hashValue].occupied && hashTable[hashValue].data[leftAttributeID] == leftInput[leftAttributeID])
+        {
             return {leftInput + hashTable[hashValue].data};
         }
         leftInput = left->next();
@@ -73,6 +73,7 @@ Tuple HashJoin::next() {
 void HashJoin::close(){
     left->close();
     right->close();
+    delete[] hashTable; //memory from hashtable deallocated
 };
 
 void SortMergeJoin::open(){

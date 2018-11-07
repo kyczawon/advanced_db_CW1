@@ -1,0 +1,23 @@
+When running my implementation of the 3 algorithms (Hash join with quadratic probing and over allocation factor of 2) the following performance could be observed:
+
+Testing Equality Join At Scale        10 : NestedLoopsJoin...Customer Left:        57us, Orders Left:        59us
+Testing Equality Join At Scale       100 : NestedLoopsJoin...Customer Left:      2707us, Orders Left:      3209us
+Testing Equality Join At Scale      1000 : NestedLoopsJoin...Customer Left:    242585us, Orders Left:    301659us
+Testing Equality Join At Scale     10000 : NestedLoopsJoin...Customer Left:  25359488us, Orders Left:  32705893us
+Testing Equality Join At Scale        10 : HashJoin...Customer Left:        31us, Orders Left:        24us
+Testing Equality Join At Scale       100 : HashJoin...Customer Left:       254us, Orders Left:       215us
+Testing Equality Join At Scale      1000 : HashJoin...Customer Left:      2763us, Orders Left:      2750us
+Testing Equality Join At Scale     10000 : HashJoin...Customer Left:     37820us, Orders Left:     27877us
+Testing Equality Join At Scale    100000 : HashJoin...Customer Left:    460704us, Orders Left:    327219us
+Testing Equality Join At Scale        10 : SortMergeJoin...Customer Left:        48us, Orders Left:        33us
+Testing Equality Join At Scale       100 : SortMergeJoin...Customer Left:       311us, Orders Left:       291us
+Testing Equality Join At Scale      1000 : SortMergeJoin...Customer Left:      3258us, Orders Left:      3906us
+Testing Equality Join At Scale     10000 : SortMergeJoin...Customer Left:     36900us, Orders Left:     34680us
+Testing Equality Join At Scale    100000 : SortMergeJoin...Customer Left:    435729us, Orders Left:    380342us
+
+As can be seen Nested Loop Join is the slowest of the algorithms. The complexity is O(n^2) as the algorithm has to iterate through every tuple in one of the relations for each tuple on the other. I have decided to buffer the left side. As can be seen when orders is on the left the performance of the algorithm is worse. This is due to the fact that the orders relation is 3 times the size of the customer relation and therefore creating the buffer is more costly. Also, the space required by the algorithm can be reduced by choosing the buffered side (left) to be the smaller table.
+
+Sort Merge Join is much faster than the Nested Loop Join. It also isn't a pipeline breaker as it doesn't store any of the relations in the buffer. Here the algorithm is more efficient when the larger relation (orders) is on the left, because the first if statement in my implementation advances the left pointer. A larger relation will usually have less matches then the smaller one and when there are more tuples to be skipped on the left the algorithm only needs to perform a single check to advance that left pointer.
+
+Hash Join is the fastest of the implementations because you create a hash table for one of the relations and the other can check for existence with an O(1) complexity. The probe shorter the probe chains the better the effect. For Hash Join it is better to hash the smaller table, because then there are fewer conflicts in the hash table and therefore shorter probing chains. This results in shorter retrieval times for each element in the larger table. I have also tested varying over allocation factors for allocating space to the hash table and have found that for linear probing, the bigger the over allocation factor the quicker the join. This is because the more slots are empty the shorter the probe chains have to be. For quadratic probing the increase in performance isn't as drastic. I have found however that for very small tables quadratic probing with a low over allocation factor is even worse than linear probing. This is because when there are only 1-2 extra spaces in a very small hash table, the quadratic function has a harder time nailing down a particular index. Graphs I've created to visualize this can be seen here https://drive.google.com/open?id=1ICCqR-doWs0eVQ95QK3CI6v_uq-py9fN
+
